@@ -16,6 +16,7 @@ public class Menu {
 	private static Scanner teclado = new Scanner(System.in);
 	private List<ordenador> ordenador = new ArrayList<ordenador>();
 	private GestorDeBorrar gestorDeBorrar = new GestorDeBorrar();
+
 	public void mostrarMenu() {
 
 		int opcionMenu = -1;
@@ -28,7 +29,7 @@ public class Menu {
 				System.out.println("3. Añadir ordenador");
 				System.out.println("4. Eliminar ordenador");
 				System.out.println("5. Modificar ordenador");
-				System.out.println("6. Crear Back-up");
+				System.out.println("6. Crear Back-up (Muestra los ordenadores mostrados en la anterior opcion seleccionada.)");
 				System.out.println("-----------------------------------------------");
 				System.out.println("Escoge una opción:");
 				opcionMenu = teclado.nextInt();
@@ -67,17 +68,16 @@ public class Menu {
 			break;
 		case 5:
 			try {
-			System.out.println("Introduzca el Numero De Serie para buscar:");
-			String numSerie = teclado.next();	
-			gestorDeBorrar.borraPc(numSerie);	
-			modificarOrdenador(numSerie);
-			}
-			catch (ParseException e) {
+				System.out.println("Introduzca el Numero De Serie para buscar:");
+				String numSerie = teclado.next();
+				gestorDeBorrar.borraPc(numSerie);
+				modificarOrdenador(numSerie);
+			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 			break;
 		case 6:
-			crearBackUp();  System.out.println("Despues de mostrar todos los ordenadores.");
+			crearBackUp();
 			break;
 		case 0:
 			System.out.println("Fin del programa!!");
@@ -88,7 +88,7 @@ public class Menu {
 	private void crearBackUp() {
 		Ficheros fichero = new Ficheros();
 		fichero.crearFichero(ordenador);
-		
+
 	}
 
 	public void mostrarTodosOrdenadores() {
@@ -113,6 +113,7 @@ public class Menu {
 		System.out.println("Introduzca el Numero De Serie para buscar:");
 		String numSerie = teclado.next();
 		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
+		ordenador = gestorDeOrdenador.obtenerPc();
 		ordenador = gestorDeOrdenador.buscarPc(numSerie);
 
 		for (int i = 0; i < ordenador.size(); i++) {
@@ -130,6 +131,9 @@ public class Menu {
 	}
 
 	public void anadirOrdenador() throws ParseException {
+
+		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
+		ordenador = gestorDeOrdenador.obtenerPc();
 
 		System.out.println("Introduzca el Numero De Serie:");
 		String numSerie = teclado.next();
@@ -151,16 +155,24 @@ public class Menu {
 	}
 
 	private void borrarOrdenador() {
+
+		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
+		ordenador = gestorDeOrdenador.obtenerPc();
+
 		System.out.println("Introduzca el Numero De Serie para modificar:");
 		String numSerie = teclado.next();
 		gestorDeBorrar.borraPc(numSerie);
 		System.out.println("El ordenador ha sido borrado correctamente");
-		
+
 		crearBackUp();
-		
+
 	}
 
 	private void modificarOrdenador(String numSerie) throws ParseException {
+
+		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
+		ordenador = gestorDeOrdenador.obtenerPc();
+
 		System.out.println("Introduzca La marca del ordenador modificada:");
 		String marca = teclado.next();
 		System.out.println("Introduzca la fecha de compra modificada:");
@@ -173,11 +185,12 @@ public class Menu {
 		String modelo = teclado.next();
 		System.out.println("Funciona correctamente?:");
 		String fun = teclado.next();
-		
-		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
+
 		gestorDeOrdenador.modificarPc(numSerie, marca, numFecha, disco, memoria, modelo, fun);
-	
+
 		crearBackUp();
+		
+		System.out.println("Modificación terminada.");
 	}
 
 }
