@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class Utils {
-	public static final String URL = "jdbc:mysql://localhost:3306/ordenador";
+	public static final String URL = "jdbc:mysql://localhost:3307/ordenador";
 
 	// El Driver que vamos a usar
 	public static final String DRIVER = "com.mysql.cj.jdbc.Driver";

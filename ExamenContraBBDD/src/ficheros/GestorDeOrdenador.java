@@ -1,8 +1,5 @@
 package ficheros;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
@@ -10,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +33,7 @@ public class GestorDeOrdenador {
 			String sql = "SELECT * FROM ORDENADOR";
 			ResultSet result = statement.executeQuery(sql);
 
-			if (result.next()) {
+			while (result.next()) {
 				ordenador ret = new ordenador();
 
 				ret.setNumSerie(result.getString("NUMSERIE"));
@@ -74,7 +71,7 @@ public class GestorDeOrdenador {
 			String sql = "SELECT * FROM ORDENADOR WHERE NUMSERIE = " + numSerie;
 			ResultSet result = statement.executeQuery(sql);
 
-			if (result.next()) {
+			while (result.next()) {
 				ordenador ret = new ordenador();
 
 				ret.setNumSerie(result.getString("NUMSERIE"));
@@ -97,7 +94,19 @@ public class GestorDeOrdenador {
 		return ordenador;
 	}
 
-	public boolean modificarPc(String numSerie) {
+	public boolean modificarPc(String numSerie, String marca, String numFecha, String disco, String memoria, String modelo, String funciona) throws ParseException {
+		
+		String getInputNumSeries = numSerie;
+		String getInputMarca = marca;
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String fecha = numFecha;
+		java.util.Date fechaEnSQLConvertida = dateFormat.parse(fecha);
+		java.sql.Date sqlDate = new java.sql.Date(fechaEnSQLConvertida.getTime());
+		String getInputDisco = disco;
+		String getInputMemoria = memoria;
+		String getInputModelo = modelo;
+		String getInputFunciona = funciona;
+		
 		Connection connection = null;
 		PreparedStatement preparedStatement = null;
 
@@ -106,17 +115,18 @@ public class GestorDeOrdenador {
 
 			connection = DriverManager.getConnection(Utils.URL, Utils.USER, Utils.PASS);
 
-			String sql = "UPDATE ORDENADOR SET MARCA=?, FECHACOMPRA=?,MODELO=?, DISCO=?,"
-					+ " MEMORIA=?, FUNCIONAELORDENADOR=? WHERE NumSerie=?";
+			String sql = "INSERT INTO ordenador (`NumSerie`, `marca`, `fechaCompra`, `disco`, `memoria`, `modelo`, `funcionaElOrdenador`)"
+					+ " VALUES (?,?,?,?,?,?,?);";
 			preparedStatement = connection.prepareStatement(sql);
 
-			preparedStatement.setString(1, ordenador.getNumSerie());
-			preparedStatement.setString(2, ordenador.getMarcaString());
-			preparedStatement.setDate(3, convertDateToSqDate(ordenador.getFechaCompra()));
-			preparedStatement.setString(4, ordenador.getDisco());
-			preparedStatement.setString(5, ordenador.getMemoria());
-			preparedStatement.setString(6, ordenador.getModelo());
-			preparedStatement.setString(7, ordenador.getFunciona());
+			preparedStatement = connection.prepareStatement(sql);
+			preparedStatement.setString(1, getInputNumSeries);
+			preparedStatement.setString(2, getInputMarca);
+			preparedStatement.setDate(3, sqlDate);
+			preparedStatement.setString(4, getInputDisco);
+			preparedStatement.setString(5, getInputMemoria);
+			preparedStatement.setString(6, getInputModelo);
+			preparedStatement.setString(7, getInputFunciona);
 
 			int i = preparedStatement.executeUpdate();
 
@@ -147,7 +157,7 @@ public class GestorDeOrdenador {
 					+ "	VALUES (?,?,?,?,?,?,?)" + "	WHERE numSerie = " + numSerie;
 			ResultSet result = statement.executeQuery(sql);
 
-			if (result.next()) {
+			while (result.next()) {
 				ordenador ret = new ordenador();
 
 				ret.setNumSerie(result.getString("NUMSERIE"));

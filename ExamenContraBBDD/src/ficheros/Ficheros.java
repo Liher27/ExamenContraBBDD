@@ -13,7 +13,7 @@ public class Ficheros {
 	PrintWriter printWriter = null;
 
 	private static final String NOMBRE_FICHERO = "ordenador.txt";
-	private static final String RUTA_FICHERO = "C:\\Users\\Usuario\\eclipse-workspace\\ExamenContraBBDD";
+	private static final String RUTA_FICHERO = "c://Users//in1dm3-v//desktop//";
 
 	public void crearFichero(List<ordenador> ordenador) {
 		try {
