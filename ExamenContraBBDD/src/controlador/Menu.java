@@ -29,7 +29,7 @@ public class Menu {
 				System.out.println("3. Añadir ordenador");
 				System.out.println("4. Eliminar ordenador");
 				System.out.println("5. Modificar ordenador");
-				System.out.println("6. Crear Back-up (Muestra los ordenadores mostrados en la anterior opcion seleccionada.)");
+				System.out.println("6. Crear Back-up (Muestra los ordenadores, solo 1 si usas la opcion 2 de antes.)");
 				System.out.println("7. Modificar un fichero (Back-Up)");
 				System.out.println("-----------------------------------------------");
 				System.out.println("Escoge una opción:");
@@ -141,9 +141,6 @@ public class Menu {
 
 	public void anadirOrdenador() throws ParseException {
 
-		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
-		ordenador = gestorDeOrdenador.obtenerPc();
-
 		System.out.println("Introduzca el Numero De Serie:");
 		String numSerie = teclado.next();
 		System.out.println("Introduzca La marca del ordenador:");
@@ -161,6 +158,11 @@ public class Menu {
 
 		GestorDeAnnadir gestorDeAnnadir = new GestorDeAnnadir();
 		gestorDeAnnadir.anadirOrdenador(numSerie, marca, numFecha, disco, memoria, modelo, fun);
+		
+		GestorDeOrdenador gestorDeOrdenador = new GestorDeOrdenador();
+		ordenador = gestorDeOrdenador.obtenerPc();
+		
+		crearBackUp();
 	}
 
 	private void borrarOrdenador() {
