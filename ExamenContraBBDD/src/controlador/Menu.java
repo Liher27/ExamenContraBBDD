@@ -30,6 +30,7 @@ public class Menu {
 				System.out.println("4. Eliminar ordenador");
 				System.out.println("5. Modificar ordenador");
 				System.out.println("6. Crear Back-up (Muestra los ordenadores mostrados en la anterior opcion seleccionada.)");
+				System.out.println("7. Modificar un fichero (Back-Up)");
 				System.out.println("-----------------------------------------------");
 				System.out.println("Escoge una opción:");
 				opcionMenu = teclado.nextInt();
@@ -38,8 +39,8 @@ public class Menu {
 				teclado.nextLine();
 				opcionMenu = -1;
 			}
-			if (opcionMenu < 0 || (opcionMenu > 6)) {
-				System.out.println("Error, introduzca un número entre 0 y 6");
+			if (opcionMenu < 0 || (opcionMenu > 7)) {
+				System.out.println("Error, introduzca un número entre 0 y 7");
 			} else {
 				elegirOpcion(opcionMenu);
 			}
@@ -79,10 +80,18 @@ public class Menu {
 		case 6:
 			crearBackUp();
 			break;
+		case 7:
+			modificarFichero();
+			break;
 		case 0:
 			System.out.println("Fin del programa!!");
 			break;
 		}
+	}
+
+	private void modificarFichero() {
+		Ficheros fichero = new Ficheros();
+		fichero.modificarFichero();
 	}
 
 	private void crearBackUp() {
